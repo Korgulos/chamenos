@@ -1,0 +1,45 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "employees": [
+    {
+      "name": "Pera",
+      "suriname": "Mitic",
+      "email": "davitelj@davitelj.vs",
+      "birthday": "1955-02-13T23:00:00.000Z",
+      "gender": "male",
+      "education": "short_tertiary_education",
+      "company": "Davitelji inc.",
+      "experience": 33,
+      "package": 9999,
+      "id": 1
+    },
+    {
+      "name": "Spiridon",
+      "suriname": "Kopicl",
+      "email": "kopicl@kk.yu",
+      "birthday": "1969-03-11T23:00:00.000Z",
+      "gender": "male",
+      "education": "doctoral_degree",
+      "company": "Kopcl doo",
+      "experience": 1,
+      "package": 44,
+      "id": 2
+    }
+  ]
+}
