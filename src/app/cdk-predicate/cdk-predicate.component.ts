@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag } from "@angular/cdk/drag-drop";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { EmployeeService } from "../services/employee.service";
-import { DialogRef } from "@angular/cdk/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { CoreService } from "../core/core.service";
 
 interface Educations {
   value: string;
@@ -18,10 +19,10 @@ interface Educations {
 /**
  * @title Drag&Drop enter predicate
  */
-export class CdkPredicateComponent {
+export class CdkPredicateComponent implements OnInit {
   empForm: FormGroup;
 
-  constructor(private _fb: FormBuilder, private _employeeService: EmployeeService, private _dialogRef: DialogRef<CdkPredicateComponent>) {
+  constructor(private _fb: FormBuilder, private _employeeService: EmployeeService, private _dialogRef: MatDialogRef<CdkPredicateComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _coreService: CoreService) {
     this.empForm = this._fb.group({
       name: "",
       suriname: "",
@@ -35,17 +36,33 @@ export class CdkPredicateComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.empForm.patchValue(this.data);
+  }
+
   onFormSubmit() {
     if (this.empForm.valid) {
-      this._employeeService.addEmployee(this.empForm.value).subscribe({
-        next: (val: any) => {
-          alert("Employee added!");
-          this._dialogRef.close();
-        },
-        error(err: any) {
-          console.error(err);
-        },
-      });
+      if (this.data) {
+        this._employeeService.updateEmployee(this.data.id, this.empForm.value).subscribe({
+          next: (val: any) => {
+            this._coreService.openSnackBar("Employee updated!", "OK");
+            this._dialogRef.close(true);
+          },
+          error(err: any) {
+            console.error(err);
+          },
+        });
+      } else {
+        this._employeeService.addEmployee(this.empForm.value).subscribe({
+          next: (val: any) => {
+            this._coreService.openSnackBar("Employee added!", "OK");
+            this._dialogRef.close(true);
+          },
+          error(err: any) {
+            console.error(err);
+          },
+        });
+      }
     }
   }
 
